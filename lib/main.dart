@@ -11,13 +11,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:SamplePage(),
+      home: SamplePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class SamplePage extends StatefulWidget {
-  SamplePage ({Key key}) : super (key: key);
+  SamplePage({Key key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _SampleAppPageState();
 }
@@ -25,6 +27,7 @@ class SamplePage extends StatefulWidget {
 class _SampleAppPageState extends State<SamplePage> {
   static const platform = const MethodChannel("app.channel.shared.data");
   String dataShared = "no data";
+
   @override
   void initState() {
     super.initState();
@@ -33,7 +36,11 @@ class _SampleAppPageState extends State<SamplePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text(dataShared),),);
+    return Scaffold(
+      body: Center(
+        child: Text(dataShared),
+      ),
+    );
   }
 
   getSharedText() async {
@@ -45,4 +52,3 @@ class _SampleAppPageState extends State<SamplePage> {
     }
   }
 }
-
