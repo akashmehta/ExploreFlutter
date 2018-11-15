@@ -4,7 +4,7 @@ class CustomWidgetRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Custom row",
+      title: "Custom rows",
       home: Scaffold(
         body: Container(
             child: InkWell(
