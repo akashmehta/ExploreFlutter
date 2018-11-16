@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'CustomWidgetRow.dart';
+import 'package:flutter_app/customWidget/CustomWidgetRow.dart';
 
 void main() => runApp(MyApp());
 

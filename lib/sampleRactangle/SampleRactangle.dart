@@ -12,14 +12,14 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text("Hello World"),
         ),
-        body: SampleRactangle(),
+        body: SampleRectangle(),
       ),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class SampleRactangle extends StatelessWidget {
+class SampleRectangle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
