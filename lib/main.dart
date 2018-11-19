@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/customWidget/CustomWidgetRow.dart';
+import 'package:flutter_app/listWidgets/ListComponent.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
 
         body: Center(
-          child: CustomWidgetRow(),
+          child: ListComponent(),
         )
       ),
     );
