@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/listWidgets/ListComponent.dart';
 import 'package:flutter_app/profile/ProfileCard.dart';
 void main() => runApp(MyApp());
 
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
 
         body: Center(
-          child: ProfileCard(),
+          child: ListComponent(),
         )
       ),
     );

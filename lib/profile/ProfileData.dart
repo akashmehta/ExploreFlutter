@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/listWidgets/UserDetailsModel.dart';
 import 'package:flutter_app/profile/ProfileDetailsComponent.dart';
 import 'package:flutter_app/profile/ProfileDetailsModel.dart';
 //import 'ProfileDetailsList.dart';
@@ -7,6 +8,10 @@ class ProfileData extends StatelessWidget {
   static const titleList = <String>["Clubs", "Rewards", "Deals"];
 
   static const counts = <int>[1, 1, 1];
+
+  final UserDetailsModel userDetailsModel;
+
+  const ProfileData(this.userDetailsModel) : assert (userDetailsModel != null);
 
   static const iconList = <IconData>[
     Icons.widgets,
@@ -31,21 +36,21 @@ class ProfileData extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(top: 10.0, left: 10.0),
                         child: Text(
-                          "Aakash Mehta",
+                          userDetailsModel.name,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 5.0, left: 10.0),
                         child: Text(
-                          "3 visits to club",
+                          userDetailsModel.clubDetails,
                           style: TextStyle(color: Colors.grey),
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 10.0),
                         child: Text(
-                          "Rs. 0 saved",
+                          userDetailsModel.moneySaved,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       )
