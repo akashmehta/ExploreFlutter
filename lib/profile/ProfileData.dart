@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/profile/ProfileDetailsComponent.dart';
+import 'package:flutter_app/profile/ProfileDetailsModel.dart';
 //import 'ProfileDetailsList.dart';
 
 class ProfileData extends StatelessWidget {
@@ -75,19 +76,19 @@ class ProfileData extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   ProfileDetailsComponent(
-                    icon: iconList[0],
-                    title: titleList[0],
-                    count: counts[0],
+                    model : ProfileDetailsModel(iconList[0],
+                        titleList[0],
+                        counts[0]),
                   ),
                   ProfileDetailsComponent(
-                    icon: iconList[1],
-                    title: titleList[1],
-                    count: counts[1],
+                    model : ProfileDetailsModel(iconList[1],
+                     titleList[1],
+                     counts[1]),
                   ),
                   ProfileDetailsComponent(
-                    icon: iconList[2],
-                    title: titleList[2],
-                    count: counts[2],
+                    model : ProfileDetailsModel(iconList[2],
+                     titleList[2],
+                     counts[2]),
                   ),
                 ],
               ),

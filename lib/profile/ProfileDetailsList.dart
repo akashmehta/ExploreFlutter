@@ -1,46 +1,33 @@
 import 'package:flutter/material.dart';
 import 'ProfileDetailsComponent.dart';
+import 'ProfileDetailsModel.dart';
 
 class ProfileDetailsList extends StatelessWidget {
-  static const titleList = <String>[
-    "Clubs",
-    "Rewards",
-    "Deals",
-    "Clubs",
-    "Rewards",
-    "Deals",
-    "Clubs",
-    "Rewards",
-    "Deals",
-    "Rewards",
-    "Deals"
-  ];
 
-  static const counts = <int>[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
   static const _verticalPadding = 10.0;
 
-  static const iconList = <IconData>[
-    Icons.widgets,
-    Icons.airline_seat_individual_suite,
-    Icons.widgets,
-    Icons.airline_seat_individual_suite,
-    Icons.widgets,
-    Icons.airline_seat_individual_suite,
-    Icons.widgets,
-    Icons.airline_seat_individual_suite,
-    Icons.widgets,
-    Icons.airline_seat_individual_suite,
-    Icons.accessibility
+  final profileModels = <ProfileDetailsModel>[
+    ProfileDetailsModel(Icons.widgets, "Clubs", 1),
+    ProfileDetailsModel(Icons.airline_seat_individual_suite, "Rewards", 1),
+    ProfileDetailsModel(Icons.widgets, "Deals", 1),
+    ProfileDetailsModel(Icons.airline_seat_individual_suite, "Clubs", 1),
+    ProfileDetailsModel(Icons.widgets, "Rewards", 1),
+    ProfileDetailsModel(Icons.airline_seat_individual_suite, "Deals", 1),
+    ProfileDetailsModel(Icons.widgets, "Clubs", 1),
+    ProfileDetailsModel(Icons.airline_seat_individual_suite, "Rewards", 1),
+    ProfileDetailsModel(Icons.widgets, "Deals", 1),
+    ProfileDetailsModel(Icons.airline_seat_individual_suite, "Rewards", 1),
+    ProfileDetailsModel(Icons.accessibility, "Deals",1)
   ];
 
   @override
   Widget build(BuildContext context) {
     final widgetList = <ProfileDetailsComponent>[];
-    for (int i = 0; i < titleList.length; i++) {
-      widgetList.add(ProfileDetailsComponent(
-          icon: iconList[i], title: titleList[i], count: counts[i]));
+    for (int i = 0; i < profileModels.length; i++) {
+      widgetList.add(ProfileDetailsComponent(model: profileModels[i]));
     }
     var _listView = ListView.builder(
+
       itemBuilder: (BuildContext context, int position) => widgetList[position],
       itemCount: widgetList.length,
       scrollDirection: Axis.horizontal,
