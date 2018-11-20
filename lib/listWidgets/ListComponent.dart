@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'ItemComponent.dart';
 
 class ListComponent extends StatelessWidget {
-
   static const _categoryNames = <String>[
     "Length",
     "Area",
@@ -38,14 +37,21 @@ class ListComponent extends StatelessWidget {
 
   static const _backGroundColor = Colors.black12;
   static const _verticalPadding = 10.0;
-  static const _title = Text("List Screen", style: TextStyle(color: Colors.white, fontSize: 16.0),);
+  static const _title = Text(
+    "List Screen",
+    style: TextStyle(color: Colors.white, fontSize: 16.0),
+  );
+
   @override
   Widget build(BuildContext context) {
     final itemComponents = <ItemComponent>[];
     for (var i = 0; i < _categoryNames.length; i++) {
-      itemComponents.add(ItemComponent(name: _categoryNames[i],
-          color: _colorNames[i],
-          icon: _icons[i]));
+      itemComponents.add(ItemComponent(
+        name: _categoryNames[i],
+        color: _colorNames[i],
+        icon: _icons[i],
+        position: i,
+      ));
     }
 
     var _listView = _buildCategoryWidgets(itemComponents);
@@ -69,7 +75,7 @@ class ListComponent extends StatelessWidget {
   Widget _buildCategoryWidgets(List<Widget> widgets) {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) => widgets[index],
-      itemCount: widgets.length,);
+      itemCount: widgets.length,
+    );
   }
-
 }
