@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'ItemComponent.dart';
 
-class ListComponent extends StatelessWidget {
+class ListComponent extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _ListComponentWidget();
+}
+
+class _ListComponentWidget extends State<ListComponent> {
   static const _categoryNames = <String>[
     "Length",
     "Area",
@@ -42,6 +47,13 @@ class ListComponent extends StatelessWidget {
     style: TextStyle(color: Colors.white, fontSize: 16.0),
   );
 
+  Widget _buildCategoryWidgets(List<Widget> widgets) {
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) => widgets[index],
+      itemCount: widgets.length,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final itemComponents = <ItemComponent>[];
@@ -69,13 +81,6 @@ class ListComponent extends StatelessWidget {
     return Scaffold(
       appBar: _appBar,
       body: _body,
-    );
-  }
-
-  Widget _buildCategoryWidgets(List<Widget> widgets) {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) => widgets[index],
-      itemCount: widgets.length,
     );
   }
 }

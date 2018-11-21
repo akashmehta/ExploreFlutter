@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/listWidgets/UserDetailsModel.dart';
 import 'package:flutter_app/profile/ProfileData.dart';
-import 'package:flutter_app/profile/ProfileDetailsList.dart';
-
-class ProfileCard extends StatelessWidget {
+class ProfileCard extends StatefulWidget {
   final UserDetailsModel userDetailsModel;
 
   const ProfileCard(this.userDetailsModel) : assert(userDetailsModel != null);
 
+  @override
+  State<StatefulWidget> createState() => _ProfileCard();
+}
+
+class _ProfileCard extends State<ProfileCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,9 +25,10 @@ class ProfileCard extends StatelessWidget {
               child: Center(
                 child: Padding(
                   padding: EdgeInsets.all(10.0),
-                  child: ProfileData(userDetailsModel),
+                  child: ProfileData(widget.userDetailsModel),
                 ),
               )),
         ));
   }
+
 }
