@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'ItemComponent.dart';
 
-class ListComponent extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _ListComponentWidget();
-}
-
-class _ListComponentWidget extends State<ListComponent> {
+class ListComponent extends StatelessWidget {
   static const _categoryNames = <String>[
     "Length",
     "Area",
