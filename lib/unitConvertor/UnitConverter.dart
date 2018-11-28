@@ -29,15 +29,27 @@ class _UnitConverterState extends State<UnitConverter> {
 
   @override
   Widget build(BuildContext context) {
-    var mainContent = Column(
+//    var mainContent = Column(
+//      children: <Widget>[inputVal(), arrow(), outputVal()],
+//    );
+    var mainContent = ListView(
       children: <Widget>[inputVal(), arrow(), outputVal()],
     );
-
     return Padding(
         padding: _padding,
-        child: Center(
-          child: mainContent,
-        ));
+        child: OrientationBuilder(builder: (BuildContext context, Orientation orientation) {
+          if (orientation == Orientation.portrait) {
+            return mainContent;
+          } else {
+            return Center(
+              child: Container(
+                width: 450,
+                child: mainContent,
+              ),
+            );
+          }
+        })
+    );
   }
 
   void _setDefaults() {

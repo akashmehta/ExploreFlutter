@@ -32,11 +32,21 @@ class _UnitList extends State<UnitList> {
       unitComponentWidgets
           .add(UnitComponent(_unitNames[i], createUnitList(_unitNames[i])));
     }
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) =>
-          unitComponentWidgets[index],
-      itemCount: _unitNames.length,
-    );
+    if (MediaQuery.of(context).orientation == Orientation.portrait) {
+      return ListView.builder(
+        itemBuilder: (BuildContext context, int index) =>
+            unitComponentWidgets[index],
+        itemCount: _unitNames.length,
+      );
+    } else {
+      return GridView.count(
+        crossAxisCount: 2,
+        childAspectRatio: 3,
+        children: _unitNames.map((String unitName) {
+          return UnitComponent(unitName, createUnitList(unitName));
+        }).toList(),
+      );
+    }
   }
 
   @override
