@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/unitConvertor/Unit.dart';
 import 'package:flutter_app/unitConvertor/UnitComponent.dart';
+import 'package:flutter_app/unitConvertor/UnitItem.dart';
 
 class UnitList extends StatefulWidget {
   const UnitList();
@@ -12,7 +13,6 @@ class UnitList extends StatefulWidget {
 }
 
 class _UnitList extends State<UnitList> {
-
   var unitComponentWidgets = <Widget>[];
 
   List<Unit> createUnitList(String unitName) {
@@ -31,12 +31,14 @@ class _UnitList extends State<UnitList> {
   }
 
   Future<void> _retrieveLocalCategories() async {
-    var json = DefaultAssetBundle.of(context).loadString("assets/data/regular_units.json");
+    var json = DefaultAssetBundle.of(context)
+        .loadString("assets/data/regular_units.json");
     var data = JsonDecoder().convert(await json);
     if (data is Map) {
-      data.keys.forEach ((key) {
-        List<Unit> units = data[key].map<Unit>((dynamic data) => Unit.fromJson(data)).toList();
-        unitComponentWidgets.add(UnitComponent(key, units));
+      data.keys.forEach((key) {
+        var unitItem = UnitItem.fromJson(data[key]);
+        unitComponentWidgets
+            .add(UnitComponent(key, unitItem.icon, unitItem.data));
       });
     } else {
       throw ('Data is not in proper syntex');
