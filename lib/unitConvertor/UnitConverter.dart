@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/unitConvertor/Unit.dart';
+import 'package:flutter_app/unitConvertor/UnitItem.dart';
 
 const _padding = EdgeInsets.all(10.0);
 
 class UnitConverter extends StatefulWidget {
-  final List<Unit> units;
+  final List<UnitItem> units;
 
   const UnitConverter({Key key, this.units}) : super(key: key);
 
@@ -13,7 +14,7 @@ class UnitConverter extends StatefulWidget {
 }
 
 class _UnitConverterState extends State<UnitConverter> {
-  Unit _fromVal, _toVal;
+  UnitItem _fromVal, _toVal;
   List<DropdownMenuItem> _unitMenuItems;
 
   String _convertedValue;
@@ -156,9 +157,9 @@ class _UnitConverterState extends State<UnitConverter> {
     });
   }
 
-  Unit _getUnit(String unitName) {
+  UnitItem _getUnit(String unitName) {
     return widget.units.firstWhere(
-      (Unit unit) {
+      (UnitItem unit) {
         return unit.name == unitName;
       },
       orElse: null,

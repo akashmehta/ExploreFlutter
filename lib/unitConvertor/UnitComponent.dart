@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/unitConvertor/Unit.dart';
 import 'package:flutter_app/unitConvertor/UnitConverter.dart';
+import 'package:flutter_app/unitConvertor/UnitItem.dart';
 
 class UnitComponent extends StatelessWidget {
-  final List<Unit> units;
+  final List<UnitItem> units;
   final String title;
 
   const UnitComponent(@required this.title, @required this.units)

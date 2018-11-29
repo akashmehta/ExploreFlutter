@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/unitConvertor/Unit.dart';
+import 'package:flutter_app/serializer.dart';
 import 'package:flutter_app/unitConvertor/UnitComponent.dart';
+import 'package:built_value/standard_json_plugin.dart';
+import 'package:flutter_app/unitConvertor/UnitItem.dart';
 
 class UnitList extends StatefulWidget {
   const UnitList();
@@ -12,15 +14,7 @@ class UnitList extends StatefulWidget {
 }
 
 class _UnitList extends State<UnitList> {
-
   var unitComponentWidgets = <Widget>[];
-
-  List<Unit> createUnitList(String unitName) {
-    return List.generate(10, (int i) {
-      i++;
-      return Unit("$unitName $i", i.toDouble());
-    });
-  }
 
   @override
   Future<void> didChangeDependencies() async {
@@ -31,11 +25,18 @@ class _UnitList extends State<UnitList> {
   }
 
   Future<void> _retrieveLocalCategories() async {
-    var json = DefaultAssetBundle.of(context).loadString("assets/data/regular_units.json");
+    final standardSerializers =
+        (serializers.toBuilder()..addPlugin(new StandardJsonPlugin())).build();
+
+    var json = DefaultAssetBundle.of(context)
+        .loadString("assets/data/regular_units.json");
     var data = JsonDecoder().convert(await json);
     if (data is Map) {
-      data.keys.forEach ((key) {
-        List<Unit> units = data[key].map<Unit>((dynamic data) => Unit.fromJson(data)).toList();
+      data.keys.forEach((key) {
+        List<UnitItem> units = data[key]
+            .map<UnitItem>((dynamic data) =>
+                standardSerializers.deserializeWith(UnitItem.serializer, data))
+            .toList();
         unitComponentWidgets.add(UnitComponent(key, units));
       });
     } else {
