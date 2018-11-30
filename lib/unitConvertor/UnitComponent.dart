@@ -37,7 +37,9 @@ class UnitComponent extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.all(10.0),
-                child: Image.asset(imageLocation),
+                child: Image.asset(imageLocation,
+                  height: 40,
+                  width: 40,),
               ),
               Center(
                 child: Text(title),
