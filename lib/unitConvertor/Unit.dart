@@ -1,16 +1,17 @@
-import 'package:meta/meta.dart';
+library example;
 
+import 'package:meta/meta.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'Unit.g.dart';
+
+@JsonSerializable()
 class Unit {
   final String name;
   final double conversion;
 
-  const Unit(@required this.name, @required this.conversion)
-      : assert(name != null),
-        assert(conversion != null);
+  const Unit(this.name, this.conversion);
 
-  Unit.fromJson(Map jsonMap)
-      : assert(jsonMap['name'] != null),
-        assert(jsonMap['conversion'] != null),
-        name = jsonMap['name'],
-        conversion = jsonMap['conversion'].toDouble();
+  factory Unit.fromJson(Map jsonMap) => _$UnitFromJson(jsonMap);
+  Map<String, dynamic> toJson() => _$UnitToJson(this);
 }
