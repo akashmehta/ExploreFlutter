@@ -6,20 +6,15 @@ import 'package:flutter_app/unitConvertor/Unit.dart';
 import 'package:http/http.dart';
 
 class UnitIntegration {
-  final String _url = 'flutter.udacity.com';
+  final String _url = 'https://flutter.udacity.com';
 
-  Future<List> getUnits(String category) async {
+  Future<Map<String, dynamic>> getUnits(String category) async {
     final response = await get(_url + '/$category');
-    Map<String, dynamic> map = JsonDecoder().convert(response.body);
-    return map['units'];
+    return JsonDecoder().convert(response.body);
   }
 
-  Future<List<Unit>> getUnitItems(String category) async {
-    var jsonMap = await getUnits(category);
-    List<Unit> units = [];
-    for (var unit in jsonMap) {
-      units.add(Unit.fromJson(unit));
-    }
-    return units;
+  Future<Map<String, dynamic>> getUnitItems(String category) async {
+    var json = await getUnits(category);
+    return json;
   }
 }
