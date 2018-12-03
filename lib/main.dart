@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/futureWidget/RemoteItem.dart';
-import 'package:flutter_app/counterStream/CounterWidget.dart';
+import 'package:flutter_app/streamAndSink/CounterWidget.dart';
 import 'package:flutter_app/unitApiIntegration/UnitWidget.dart';
 import 'package:flutter_app/unitConvertor/UnitList.dart';
 void main() => runApp(MyApp());
