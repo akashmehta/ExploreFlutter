@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/counterUsingBloc/bloc_provider.dart';
+import 'package:flutter_app/common/bloc_provider.dart';
 import 'package:flutter_app/counterUsingBloc/counter_bloc.dart';
 import 'package:flutter_app/counterUsingBloc/counter_bloc_widget.dart';
 import 'package:flutter_app/futureWidget/RemoteItem.dart';

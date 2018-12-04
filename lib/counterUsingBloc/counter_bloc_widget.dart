@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/counterUsingBloc/bloc_provider.dart';
+import 'package:flutter_app/common/bloc_provider.dart';
 import 'package:flutter_app/counterUsingBloc/counter_bloc.dart';
 
 class CounterBlocWidget extends StatelessWidget {
