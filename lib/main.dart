@@ -6,6 +6,8 @@ import 'package:flutter_app/futureWidget/RemoteItem.dart';
 import 'package:flutter_app/streamAndSink/CounterWidget.dart';
 import 'package:flutter_app/unitApiIntegration/UnitWidget.dart';
 import 'package:flutter_app/unitConvertor/UnitList.dart';
+import 'package:flutter_app/userLoginPage/login_bloc.dart';
+import 'package:flutter_app/userLoginPage/login_page_widget.dart';
 void main() => runApp(MyApp());
 
 
@@ -15,8 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: BlocProvider(
-        bloc: CounterBloc(),
-        child: CounterBlocWidget(),
+        bloc: LoginBloc(),
+        child: LoginPageWidget(),
       ),
     );
   }
