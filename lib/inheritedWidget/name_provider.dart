@@ -13,6 +13,6 @@ class NameProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(NameProvider oldWidget) {
-    return true;
+    return nameHandler.name != oldWidget.nameHandler.name;
   }
 }
