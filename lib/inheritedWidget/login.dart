@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/inheritedWidget/login_page.dart';
-import 'package:flutter_app/inheritedWidget/name_handler.dart';
+import 'package:flutter_app/inheritedWidget/password_handler.dart';
 import 'package:flutter_app/inheritedWidget/name_provider.dart';
 import 'package:flutter_app/inheritedWidget/show_name.dart';
 

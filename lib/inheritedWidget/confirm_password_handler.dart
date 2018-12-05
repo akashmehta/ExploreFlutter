@@ -1,7 +1,7 @@
-class NameHandler {
+class ConfirmPasswordHandler {
   String name;
 
-  NameHandler(this.name);
+  ConfirmPasswordHandler(this.name);
 
   void setName(String name) {
     this.name = name;
