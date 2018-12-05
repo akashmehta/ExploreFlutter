@@ -60,6 +60,7 @@ class LoginBloc extends BaseBloc {
 
   @override
   void dispose() {
+    _successMessage.close();
     _submitController.close();
     _userNameController.close();
     _passwordController.close();
