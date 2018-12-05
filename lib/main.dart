@@ -7,20 +7,17 @@ import 'package:flutter_app/streamAndSink/CounterWidget.dart';
 import 'package:flutter_app/unitApiIntegration/UnitWidget.dart';
 import 'package:flutter_app/unitConvertor/UnitList.dart';
 import 'package:flutter_app/userLoginPage/login_bloc.dart';
+import 'package:flutter_app/loginUsingScopeModel/login_page.dart';
 import 'package:flutter_app/userLoginPage/login_page_widget.dart';
-void main() => runApp(MyApp());
 
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BlocProvider(
-        bloc: LoginBloc(),
-        child: LoginPageWidget(),
-      ),
+      home: LoginPage(),
     );
   }
-
 }
