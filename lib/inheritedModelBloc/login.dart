@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/inheritedWidget/login_page.dart';
+import 'package:flutter_app/common/inherited_bloc_provider.dart';
+import 'package:flutter_app/inheritedModelBloc/login_page.dart';
 
 class LoginWidget extends StatelessWidget {
   @override
@@ -10,11 +11,8 @@ class LoginWidget extends StatelessWidget {
         title: Text("Login"),
         centerTitle: true,
       ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: LoginPage(),
-        ),
+      body: InheritedBlocProvider(
+        child: LoginPage(),
       ),
     );
   }

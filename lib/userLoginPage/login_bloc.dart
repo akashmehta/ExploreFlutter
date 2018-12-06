@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_app/common/bloc_provider.dart';
+import 'package:flutter_app/common/BaseBloc.dart';
 
 class LoginBloc extends BaseBloc {
   String _userName = "";

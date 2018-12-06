@@ -1,8 +1,5 @@
 import 'package:flutter/cupertino.dart';
-
-abstract class BaseBloc {
-  void dispose();
-}
+import 'package:flutter_app/common/BaseBloc.dart';
 
 class BlocProvider<T extends BaseBloc> extends StatelessWidget {
   final T bloc;
