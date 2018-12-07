@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/inheritedModelBloc/login_bloc.dart';
+import 'package:flutter_app/common/BaseBloc.dart';
 
-class InheritedBlocProvider extends InheritedWidget {
-  final LoginBloc bloc = new LoginBloc();
+class InheritedBlocProvider<T extends BaseBloc> extends InheritedWidget {
+  T bloc;
+
+  void createInstance(T t) {
+    this.bloc = t;
+  }
 
   InheritedBlocProvider({Key key, Widget child})
       : super(key: key, child: child);
 
-  static LoginBloc of(BuildContext context) {
+  static T of<T extends BaseBloc>(BuildContext context) {
     InheritedBlocProvider inheritedBlocProvider =
         context.inheritFromWidgetOfExactType(InheritedBlocProvider);
     return inheritedBlocProvider.bloc;
