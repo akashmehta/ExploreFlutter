@@ -4,7 +4,6 @@ import 'package:flutter_app/apiIntegrationUsingDart/output_list_widget.dart';
 import 'package:flutter_app/apiIntegrationUsingDart/recipe_puppy_bloc.dart';
 import 'package:flutter_app/apiIntegrationUsingDart/user_input_widget.dart';
 import 'package:flutter_app/common/inherited_bloc_provider.dart';
-import 'package:http/http.dart';
 
 class RecipePuppyHome extends StatelessWidget {
   @override

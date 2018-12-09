@@ -10,22 +10,16 @@ class UserInputWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     RecipePuppyBloc bloc = InheritedBlocProvider.of<RecipePuppyBloc>(context);
     return Container(
-      child: Center(
+      child: Padding(
+        padding: EdgeInsets.all(10),
         child: TextField(
-          style: Theme
-              .of(context)
-              .textTheme
-              .display1,
+          style: Theme.of(context).textTheme.display1,
           decoration: InputDecoration(
               labelText: labelInput,
-              labelStyle: Theme
-                  .of(context)
-                  .textTheme
-                  .display1,
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(2))),
+              labelStyle: Theme.of(context).textTheme.display1,
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(2))),
           onChanged: bloc.searchItems,
-          obscureText: true,
         ),
       ),
     );
