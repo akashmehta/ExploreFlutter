@@ -41,8 +41,8 @@ class RecipePuppyBloc extends BaseBloc {
         .flatMap((data) => Observable.fromFuture(fetchData(data)))
         .doOnListen(() => eventModelSink.add(EventModel(true, null, null)))
         .doOnData((list) => eventModelSink.add(EventModel(false, list, null)))
-        .doOnError(() => eventModelSink.add(EventModel(false, null, "")))
-        .listen(print);
+        .doOnError((error, stackTrace) => eventModelSink.add(EventModel(false, null, error)))
+        .listen(null);
   }
 
   Future<File> _getApplicationFile() async {
