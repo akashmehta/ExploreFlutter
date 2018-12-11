@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter_app/apiIntegrationUsingDart/recipe_puppy_response.dart';
 import 'package:flutter_app/apiIntegrationUsingDart/recipe_results.dart';
 import 'package:flutter_app/common/BaseBloc.dart';
@@ -45,20 +47,31 @@ class RecipePuppyBloc extends BaseBloc {
         .listen(print);
   }
 
-  static Future<List<RecipeResults>> fetchData(String query) async {
-    final mPrefs = await SharedPreferences.getInstance();
-    final emptyQueryResponse = mPrefs.getString("empty_query_response");
-    if (emptyQueryResponse == null || emptyQueryResponse == "") {
+  Future<File> _getApplicationFile() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/response.txt');
+    return file;
+  }
+
+  Future<List<RecipeResults>> fetchData(String query) async {
+    File file  = await _getApplicationFile();
+    bool isFileExist = await file.exists();
+    if (!isFileExist) {
+      file.create();
+    }
+    String content = await file.readAsString();
+    if (content == null || content == "") {
       final response = await get("http://www.recipepuppy.com/api/?q=$query");
       if (response.statusCode == 200) {
-        mPrefs.setString("empty_query_response", response.body);
+        file.writeAsString(response.body);
         return RecipePuppyResponse.fromJson(JsonDecoder().convert(response.body))
             .results;
       } else {
         throw Exception(response.body);
       }
     } else {
-      return RecipePuppyResponse.fromJson(JsonDecoder().convert(emptyQueryResponse))
+      String item = await file.readAsString();
+      return RecipePuppyResponse.fromJson(JsonDecoder().convert(item))
           .results;
     }
   }
