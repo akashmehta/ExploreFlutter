@@ -13,10 +13,6 @@ class RecipePuppyBloc extends BaseBloc {
 
   Stream<String> get userInputStream => _userInputController.stream;
 
-  Observable<List<RecipeResults>> get recipeResult =>
-      new Observable(userInputStream).flatMap((userInput) =>
-          Observable.fromFuture(OutputList.fetchData(userInput)));
-
   StreamController<EventModel> _eventController =
       new StreamController<EventModel>();
 
@@ -34,6 +30,25 @@ class RecipePuppyBloc extends BaseBloc {
   void dispose() {
     _userInputController.close();
     _eventController.close();
+  }
+
+  void fetchRecipeApiSearchResult(String query) {
+    Observable.just(query)
+        .flatMap((data) => Observable.fromFuture(fetchData(data)))
+        .doOnListen(() => eventModelSink.add(EventModel(true, null, null)))
+        .doOnData((list) => eventModelSink.add(EventModel(false, list, null)))
+        .doOnError(() => eventModelSink.add(EventModel(false, null, "")))
+        .listen(print);
+  }
+
+  static Future<List<RecipeResults>> fetchData(String query) async {
+    final response = await get("http://www.recipepuppy.com/api/?q=$query");
+    if (response.statusCode == 200) {
+      return RecipePuppyResponse.fromJson(JsonDecoder().convert(response.body))
+          .results;
+    } else {
+      throw Exception(response.body);
+    }
   }
 }
 

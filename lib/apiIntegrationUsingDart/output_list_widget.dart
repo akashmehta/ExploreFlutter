@@ -4,11 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/apiIntegrationUsingDart/recipe_puppy_bloc.dart';
 import 'package:flutter_app/apiIntegrationUsingDart/recipe_puppy_list.dart';
-import 'package:flutter_app/apiIntegrationUsingDart/recipe_puppy_response.dart';
-import 'package:flutter_app/apiIntegrationUsingDart/recipe_results.dart';
 import 'package:flutter_app/common/inherited_bloc_provider.dart';
-import 'package:http/http.dart';
-import 'package:rxdart/rxdart.dart';
 
 class OutputList extends StatelessWidget {
 
@@ -17,16 +13,10 @@ class OutputList extends StatelessWidget {
     RecipePuppyBloc recipePuppyBloc =
         InheritedBlocProvider.of<RecipePuppyBloc>(context);
     return StreamBuilder(
+      initialData: "",
       stream: recipePuppyBloc.userInputStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        Observable.just(snapshot.data)
-            .flatMap((data) => Observable.fromFuture(fetchData(data)))
-            .doOnListen(() => recipePuppyBloc.eventModelSink
-                .add(EventModel(true, null, null)))
-            .doOnData((list) => recipePuppyBloc.eventModelSink
-                .add(EventModel(false, list, null)))
-            .doOnError(() => recipePuppyBloc.eventModelSink
-                .add(EventModel(false, null, ""))).listen(print);
+        recipePuppyBloc.fetchRecipeApiSearchResult(snapshot.data);
 
         return StreamBuilder<EventModel>(
           stream: recipePuppyBloc.eventModelStream,
@@ -48,26 +38,6 @@ class OutputList extends StatelessWidget {
             }
           },
         );
-//        if (outputList == null) {
-//
-//        } else if (outputList.isNotEmpty) {
-//        } else {
-//        }
-//
-//        return FutureBuilder(
-//            future: fetchData(userInput),
-//            builder: (context, snapshot) {
-//              if (snapshot.hasData) {
-//                List<RecipeResults> itemList = snapshot.data;
-//                return RecipePuppyList(itemList);
-//              } else if (snapshot.hasError) {
-//                return _errorText(context, snapshot.error);
-//              }
-//              return CircularProgressIndicator(
-//                backgroundColor: Colors.teal,
-//                strokeWidth: 1,
-//              );
-//            });
       },
     );
   }
@@ -77,15 +47,5 @@ class OutputList extends StatelessWidget {
       message,
       style: TextStyle(color: Colors.red, fontSize: 12),
     );
-  }
-
-  static Future<List<RecipeResults>> fetchData(String query) async {
-    final response = await get("http://www.recipepuppy.com/api/?q=$query");
-    if (response.statusCode == 200) {
-      return RecipePuppyResponse.fromJson(JsonDecoder().convert(response.body))
-          .results;
-    } else {
-      throw Exception(response.body);
-    }
   }
 }
