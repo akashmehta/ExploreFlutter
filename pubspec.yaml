@@ -23,6 +23,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   scoped_model: ^1.0.1
   rxdart : 0.19.0
+  shared_preferences : 0.4.3
 
 dev_dependencies:
   json_serializable: ^2.0.0

@@ -7,6 +7,8 @@ import 'package:flutter_app/common/BaseBloc.dart';
 import 'package:http/http.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class RecipePuppyBloc extends BaseBloc {
   StreamController<String> _userInputController =
       new StreamController<String>();
@@ -44,12 +46,20 @@ class RecipePuppyBloc extends BaseBloc {
   }
 
   static Future<List<RecipeResults>> fetchData(String query) async {
-    final response = await get("http://www.recipepuppy.com/api/?q=$query");
-    if (response.statusCode == 200) {
-      return RecipePuppyResponse.fromJson(JsonDecoder().convert(response.body))
-          .results;
+    final mPrefs = await SharedPreferences.getInstance();
+    final emptyQueryResponse = mPrefs.getString("empty_query_response");
+    if (emptyQueryResponse == null || emptyQueryResponse == "") {
+      final response = await get("http://www.recipepuppy.com/api/?q=$query");
+      if (response.statusCode == 200) {
+        mPrefs.setString("empty_query_response", response.body);
+        return RecipePuppyResponse.fromJson(JsonDecoder().convert(response.body))
+            .results;
+      } else {
+        throw Exception(response.body);
+      }
     } else {
-      throw Exception(response.body);
+      return RecipePuppyResponse.fromJson(JsonDecoder().convert(emptyQueryResponse))
+          .results;
     }
   }
 }
