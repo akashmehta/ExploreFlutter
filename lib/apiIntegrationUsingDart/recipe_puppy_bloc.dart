@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:flutter_app/apiIntegrationUsingDart/output_list_widget.dart';
+import 'package:flutter_app/apiIntegrationUsingDart/recipe_puppy_response.dart';
 import 'package:flutter_app/apiIntegrationUsingDart/recipe_results.dart';
 import 'package:flutter_app/common/BaseBloc.dart';
+import 'package:http/http.dart';
 import 'package:rxdart/rxdart.dart';
 
 class RecipePuppyBloc extends BaseBloc {
