@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_app/common/BaseBloc.dart';
-import 'package:flutter_app/common/bloc_provider.dart';
 
 class CounterBloc extends BaseBloc {
   StreamController<int> _counterController = StreamController<int>();
