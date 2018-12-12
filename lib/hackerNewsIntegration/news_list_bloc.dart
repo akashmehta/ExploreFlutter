@@ -8,38 +8,24 @@ import 'package:http/http.dart';
 import 'package:rxdart/rxdart.dart';
 
 class NewsListBloc extends BaseBloc {
-  StreamController<List<String>> _idListController = new StreamController();
 
-  Sink<List<String>> get _idListSink => _idListController.sink;
-
-  Stream<List<String>> get _idListStream => _idListController.stream;
-
-  StreamController<List<NewsResponseItem>> _newsResponseController =
-      new StreamController();
-
-  Sink<List<NewsResponseItem>> get _newsResponseSink =>
-      _newsResponseController.sink;
-
-  Stream<List<NewsResponseItem>> get newsResponseStream =>
-      _newsResponseController.stream;
+  StreamController<EventModel> _eventController = new StreamController();
+  Sink<EventModel> get _eventSink  => _eventController.sink;
+  Stream<EventModel> get eventStream => _eventController.stream;
 
   void fetchNewsItems(String newsType) {
-    Observable.fromFuture(fetchNewsIds(newsType))
-        .flatMap((List<int> idList) => _fetchIdApis(idList))
-
-        .listen(null);
+    AsObservableFuture future = Observable.fromFuture(fetchNewsIds(newsType))
+        .flatMapIterable((id) => Observable.just(id))
+        .skip(0)
+        .take(10)
+        .flatMap((int id) => Observable.fromFuture(_fetchNewsItems(id)))
+        .toList();
+    Observable.fromFuture(future).listen(print);
   }
 
-  Observable<List<Observable<NewsResponseItem>>> _fetchIdApis(List<int> ids) {
-    List<Observable<NewsResponseItem>> responseList = new List(ids.length);
-    ids.forEach((id) {
-      responseList.add(Observable.fromFuture(_fetchNewsItems(id)));
-    });
-    return Observable.just(responseList);
-  }
-
-  Future<NewsResponseItem> _fetchNewsItems (int id) async {
-    final response = await get("https://hacker-news.firebaseio.com/v0/item/$id.json");
+  Future<NewsResponseItem> _fetchNewsItems(int id) async {
+    final response =
+        await get("https://hacker-news.firebaseio.com/v0/item/$id.json");
     if (response.statusCode == 200) {
       return NewsResponseItem.fromJson(JsonDecoder().convert(response.body));
     } else {
@@ -48,10 +34,18 @@ class NewsListBloc extends BaseBloc {
   }
 
   Future<List<int>> fetchNewsIds(String newsType) async {
+    print("https://hacker-news.firebaseio.com/v0/$newsType.json");
     final response =
         await get("https://hacker-news.firebaseio.com/v0/$newsType.json");
     if (response.statusCode == 200) {
-      return NewsIdList.fromJson(JsonDecoder().convert(response.body)).ids;
+      List<int> idList = List();
+      List<dynamic> responseList = JsonDecoder().convert(response.body);
+      for (var value in responseList) {
+        if (value is int) {
+          idList.add(value);
+        }
+      }
+      return idList;
     } else {
       throw Exception(response.body);
     }
@@ -59,7 +53,14 @@ class NewsListBloc extends BaseBloc {
 
   @override
   void dispose() {
-    _idListController.close();
-    _newsResponseController.close();
+    _eventController.close();
   }
+}
+
+class EventModel {
+  final bool progress;
+  final List<NewsResponseItem> response;
+  final String error;
+
+  EventModel(this.progress, this.response, this.error);
 }

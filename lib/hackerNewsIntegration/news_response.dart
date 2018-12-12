@@ -10,8 +10,8 @@ part 'news_response.g.dart';
 @JsonSerializable()
 class NewsResponseItem {
   final String by;
-  final String descendants;
-  final String id;
+  final int descendants;
+  final int id;
   final int score;
   final int time;
   final String title;
