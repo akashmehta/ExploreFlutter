@@ -53,7 +53,14 @@ class _HackerNewsListWidgetState extends State<HackerNewsListWidget>
   }
 
   Widget _createListView(List<NewsResponseItem> itemList) {
+    ScrollController _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollController.position.maxScrollExtent == _scrollController.position.pixels) {
+        print("Reached to end");
+      }
+    });
     return ListView.builder(
+        controller: _scrollController,
         itemCount: itemList.length,
         itemBuilder: (BuildContext context, int index) =>
             NewsListItem(itemList[index]));
