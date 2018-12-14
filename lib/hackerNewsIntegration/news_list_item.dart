@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/common/circular_progress_indicator.dart';
 import 'package:flutter_app/hackerNewsIntegration/news_response.dart';
 
 class NewsListItem extends StatelessWidget {
@@ -9,7 +10,15 @@ class NewsListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Padding(
+      child: _rowWidget(newsResponseItem)
+    );
+  }
+
+  Widget _rowWidget(NewsResponseItem newsResponseItem) {
+    if (newsResponseItem == null) {
+      return Center(child: ProgressIndicatorWidget(),);
+    } else {
+      return Padding(
         padding: EdgeInsets.only(top: 16, bottom: 16, left: 10, right: 10),
         child: Container(
           decoration: BoxDecoration(
@@ -25,7 +34,8 @@ class NewsListItem extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
+
 }

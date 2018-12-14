@@ -19,6 +19,9 @@ class HackerNewsListWidget extends StatefulWidget {
 class _HackerNewsListWidgetState extends State<HackerNewsListWidget>
     with AutomaticKeepAliveClientMixin<HackerNewsListWidget> {
   NewsListBloc newsListBloc;
+  List<NewsResponseItem> itemList = List<NewsResponseItem>();
+
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -43,20 +46,36 @@ class _HackerNewsListWidgetState extends State<HackerNewsListWidget>
   }
 
   Widget _getPage(EventModel model) {
+    isLoading = false;
     if (model.progress) {
-      return ProgressIndicatorWidget();
+      if (itemList.isEmpty) {
+        return ProgressIndicatorWidget();
+      } else {
+        itemList.add(null);
+        return _createListView(itemList);
+      }
     } else if (model.response != null) {
-      return _createListView(model.response);
+      itemList.remove(null);
+      itemList.addAll(model.response);
+      return _createListView(itemList);
     } else {
-      return ErrorTextWidget(model.error);
+      if (itemList.isEmpty) {
+        return ErrorTextWidget(model.error);
+      } else {
+        return _createListView(itemList);
+      }
     }
   }
 
   Widget _createListView(List<NewsResponseItem> itemList) {
     ScrollController _scrollController = ScrollController();
     _scrollController.addListener(() {
-      if (_scrollController.position.maxScrollExtent == _scrollController.position.pixels) {
-        print("Reached to end");
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.position.pixels) {
+        if (!isLoading) {
+          isLoading = !isLoading;
+          newsListBloc.fetchNewsItems(widget.type);
+        }
       }
     });
     return ListView.builder(

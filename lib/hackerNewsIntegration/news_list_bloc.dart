@@ -7,19 +7,49 @@ import 'package:http/http.dart';
 import 'package:rxdart/rxdart.dart';
 
 class NewsListBloc extends BaseBloc {
-
   StreamController<EventModel> _eventController = new StreamController();
 
   Sink<EventModel> get _eventSink => _eventController.sink;
 
   Stream<EventModel> get eventStream => _eventController.stream;
 
+  StreamController<List<NewsResponseItem>> _itemListController =
+      new StreamController();
+
+  Sink<List<NewsResponseItem>> get _itemListSink => _itemListController.sink;
+
+  Stream<List<NewsResponseItem>> get itemListStream =>
+      _itemListController.stream;
+
+
+  StreamController<List<int>> _intCountController =
+      new StreamController();
+  Sink<List<int>> get _intCountSink => _intCountController.sink;
+  Stream<List<int>> get intCountStream => _intCountController.stream;
+
+  StreamController<List<int>> _intEventController =
+      new StreamController();
+  Sink<List<int>> get _intEventSink => _intEventController.sink;
+  Stream<List<int>> get intEventStream => _intEventController.stream;
+
+
+  void updateItemList(List<int> preList,
+      List<int> data, bool updateList) {
+    if (updateList) {
+      print("==================== ==================== UPDATE LIST");
+      preList.addAll(data);
+    }
+    print("==================== ==================== SHOW LIST VIEW");
+    _intCountSink.add(preList);
+  }
+
   void fetchNewsItems(String newsType) {
     AsObservableFuture future = Observable.fromFuture(fetchNewsIds(newsType))
         .flatMapIterable((id) => Observable.just(id))
         .skip(0)
         .take(10)
-        .flatMap((id) => Observable.fromFuture(_fetchNewsItems(id))).toList();
+        .flatMap((id) => Observable.fromFuture(_fetchNewsItems(id)))
+        .toList();
     Observable.fromFuture(future).doOnListen(() {
       _eventSink.add(EventModel(true, null, null));
     }).doOnError((error, stacktrace) {
@@ -40,9 +70,10 @@ class NewsListBloc extends BaseBloc {
   }
 
   Future<List<int>> fetchNewsIds(String newsType) async {
-    print("https://hacker-news.firebaseio.com/v0/${newsType.toLowerCase() + "stories"}.json");
-    final response =
-        await get("https://hacker-news.firebaseio.com/v0/${newsType.toLowerCase() + "stories"}.json");
+    print(
+        "https://hacker-news.firebaseio.com/v0/${newsType.toLowerCase() + "stories"}.json");
+    final response = await get(
+        "https://hacker-news.firebaseio.com/v0/${newsType.toLowerCase() + "stories"}.json");
     if (response.statusCode == 200) {
       List<int> idList = List();
       List<dynamic> responseList = JsonDecoder().convert(response.body);
@@ -60,6 +91,9 @@ class NewsListBloc extends BaseBloc {
   @override
   void dispose() {
     _eventController.close();
+    _itemListController.close();
+    _intCountController.close();
+    _intEventController.close();
   }
 }
 
@@ -69,4 +103,12 @@ class EventModel {
   final String error;
 
   EventModel(this.progress, this.response, this.error);
+}
+
+class IntEventModel {
+  final bool progress;
+  final List<int> response;
+  final String error;
+
+  IntEventModel(this.progress, this.response, this.error);
 }
