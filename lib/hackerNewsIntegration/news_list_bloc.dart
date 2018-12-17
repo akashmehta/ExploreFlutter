@@ -21,20 +21,21 @@ class NewsListBloc extends BaseBloc {
   Stream<List<NewsResponseItem>> get itemListStream =>
       _itemListController.stream;
 
+  StreamController<List<int>> _intCountController = new StreamController();
 
-  StreamController<List<int>> _intCountController =
-      new StreamController();
   Sink<List<int>> get _intCountSink => _intCountController.sink;
+
   Stream<List<int>> get intCountStream => _intCountController.stream;
 
-  StreamController<List<int>> _intEventController =
-      new StreamController();
+  StreamController<List<int>> _intEventController = new StreamController();
+
   Sink<List<int>> get _intEventSink => _intEventController.sink;
+
   Stream<List<int>> get intEventStream => _intEventController.stream;
 
+  int _skipCount = 0;
 
-  void updateItemList(List<int> preList,
-      List<int> data, bool updateList) {
+  void updateItemList(List<int> preList, List<int> data, bool updateList) {
     if (updateList) {
       print("==================== ==================== UPDATE LIST");
       preList.addAll(data);
@@ -43,10 +44,27 @@ class NewsListBloc extends BaseBloc {
     _intCountSink.add(preList);
   }
 
+  List<int> idList = List();
+
   void fetchNewsItems(String newsType) {
-    AsObservableFuture future = Observable.fromFuture(fetchNewsIds(newsType))
+    if (idList.isEmpty) {
+      Observable<List<int>> _newsIdFuture =
+      Observable.fromFuture(fetchNewsIds(newsType));
+      _newsIdFuture.doOnData((idList) {
+        this.idList.clear();
+        this.idList.addAll(idList);
+        displayNewsItems();
+      }).listen(print);
+    } else {
+      displayNewsItems();
+    }
+
+  }
+
+  void displayNewsItems() {
+    AsObservableFuture future = Observable.just(idList)
         .flatMapIterable((id) => Observable.just(id))
-        .skip(0)
+        .skip(_skipCount)
         .take(10)
         .flatMap((id) => Observable.fromFuture(_fetchNewsItems(id)))
         .toList();
@@ -55,7 +73,9 @@ class NewsListBloc extends BaseBloc {
     }).doOnError((error, stacktrace) {
       _eventSink.add(EventModel(false, null, error.toString()));
     }).listen((itemList) {
-      _eventSink.add(EventModel(false, itemList, null));
+      List<NewsResponseItem> newsItems = itemList;
+      _skipCount += newsItems.length;
+      _eventSink.add(EventModel(false, newsItems, null));
     });
   }
 

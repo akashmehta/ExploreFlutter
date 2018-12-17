@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: BlocProvider(
           bloc: NewsListBloc(),
-          child: NewsListWidget(),
+          child: NewsHomeWidget(),
         ));
   }
 }

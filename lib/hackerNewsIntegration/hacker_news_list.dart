@@ -20,7 +20,6 @@ class _HackerNewsListWidgetState extends State<HackerNewsListWidget>
     with AutomaticKeepAliveClientMixin<HackerNewsListWidget> {
   NewsListBloc newsListBloc;
   List<NewsResponseItem> itemList = List<NewsResponseItem>();
-
   bool isLoading = false;
 
   @override
@@ -51,12 +50,14 @@ class _HackerNewsListWidgetState extends State<HackerNewsListWidget>
       if (itemList.isEmpty) {
         return ProgressIndicatorWidget();
       } else {
-        itemList.add(null);
         return _createListView(itemList);
       }
     } else if (model.response != null) {
-      itemList.remove(null);
+      if (itemList.contains(null)) {
+        itemList.remove(null);
+      }
       itemList.addAll(model.response);
+      itemList.add(null);
       return _createListView(itemList);
     } else {
       if (itemList.isEmpty) {
