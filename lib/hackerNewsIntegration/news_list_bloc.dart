@@ -12,37 +12,7 @@ class NewsListBloc extends BaseBloc {
   Sink<EventModel> get _eventSink => _eventController.sink;
 
   Stream<EventModel> get eventStream => _eventController.stream;
-
-  StreamController<List<NewsResponseItem>> _itemListController =
-      new StreamController();
-
-  Sink<List<NewsResponseItem>> get _itemListSink => _itemListController.sink;
-
-  Stream<List<NewsResponseItem>> get itemListStream =>
-      _itemListController.stream;
-
-  StreamController<List<int>> _intCountController = new StreamController();
-
-  Sink<List<int>> get _intCountSink => _intCountController.sink;
-
-  Stream<List<int>> get intCountStream => _intCountController.stream;
-
-  StreamController<List<int>> _intEventController = new StreamController();
-
-  Sink<List<int>> get _intEventSink => _intEventController.sink;
-
-  Stream<List<int>> get intEventStream => _intEventController.stream;
-
   int _skipCount = 0;
-
-  void updateItemList(List<int> preList, List<int> data, bool updateList) {
-    if (updateList) {
-      print("==================== ==================== UPDATE LIST");
-      preList.addAll(data);
-    }
-    print("==================== ==================== SHOW LIST VIEW");
-    _intCountSink.add(preList);
-  }
 
   List<int> idList = List();
 
@@ -90,8 +60,6 @@ class NewsListBloc extends BaseBloc {
   }
 
   Future<List<int>> fetchNewsIds(String newsType) async {
-    print(
-        "https://hacker-news.firebaseio.com/v0/${newsType.toLowerCase() + "stories"}.json");
     final response = await get(
         "https://hacker-news.firebaseio.com/v0/${newsType.toLowerCase() + "stories"}.json");
     if (response.statusCode == 200) {
@@ -111,9 +79,6 @@ class NewsListBloc extends BaseBloc {
   @override
   void dispose() {
     _eventController.close();
-    _itemListController.close();
-    _intCountController.close();
-    _intEventController.close();
   }
 }
 
