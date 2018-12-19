@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common/bloc_provider.dart';
-import 'package:flutter_app/common/inherited_bloc_provider.dart';
 import 'package:flutter_app/hackerNewsIntegration/hacker_news_list.dart';
 import 'package:flutter_app/hackerNewsIntegration/news_list_bloc.dart';
+import 'package:functional_widget_annotation/functional_widget_annotation.dart';
+import 'package:flutter/widgets.dart';
 
+part 'news_home.g.dart';
 class NewsHomeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: _defaultTabController());
+    return MaterialApp(home: const NewsTabController());
   }
 
-  Widget _defaultTabController() {
+  @widget
+  Widget newsTabController(BuildContext context) {
     return DefaultTabController(
         length: 3,
         child: Scaffold(

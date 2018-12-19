@@ -26,10 +26,11 @@ dependencies:
   shared_preferences : 0.4.3
   path_provider : 0.4.1
   flutter_webview_plugin : 0.3.0+2
-
+  functional_widget_annotation: 0.1.0
 dev_dependencies:
   json_serializable: ^2.0.0
-  build_runner: ^1.0.0
+  functional_widget: 0.2.1
+  build_runner: 1.1.2
   flutter_test:
     sdk: flutter
 
