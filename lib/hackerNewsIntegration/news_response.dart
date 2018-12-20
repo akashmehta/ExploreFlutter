@@ -17,6 +17,9 @@ class NewsResponseItem {
   final String title;
   final String type;
   final String url;
+  bool expanded;
+  bool get isExpanded => expanded;
+  set setIsExpanded(bool isExpanded) => expanded = isExpanded;
 
   NewsResponseItem(this.by, this.descendants, this.id, this.score, this.time,
       this.title, this.type, this.url);

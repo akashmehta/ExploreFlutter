@@ -12,14 +12,25 @@ class NewsListBloc extends BaseBloc {
   Sink<EventModel> get _eventSink => _eventController.sink;
 
   Stream<EventModel> get eventStream => _eventController.stream;
+
+  StreamController<int> _itemController = new StreamController();
+
+  Sink<int> get _itemSink => _itemController.sink;
+
+  Stream<int> get itemStream => _itemController.stream;
+
   int _skipCount = 0;
 
   List<int> idList = List();
 
+  void notifyItemExpand(int itemIndex) {
+    _itemSink.add(itemIndex);
+  }
+
   void fetchNewsItems(String newsType) {
     if (idList.isEmpty) {
       Observable<List<int>> _newsIdFuture =
-      Observable.fromFuture(fetchNewsIds(newsType));
+          Observable.fromFuture(fetchNewsIds(newsType));
       _newsIdFuture.doOnData((idList) {
         this.idList.clear();
         this.idList.addAll(idList);
@@ -28,7 +39,6 @@ class NewsListBloc extends BaseBloc {
     } else {
       displayNewsItems();
     }
-
   }
 
   void displayNewsItems() {
@@ -79,6 +89,14 @@ class NewsListBloc extends BaseBloc {
   @override
   void dispose() {
     _eventController.close();
+    _itemController.close();
+  }
+
+  int openedIndex = -1;
+
+  void setOpenIndex(int itemPosition) {
+    _itemSink.add(openedIndex);
+    this.openedIndex = itemPosition;
   }
 }
 
@@ -88,12 +106,4 @@ class EventModel {
   final String error;
 
   EventModel(this.progress, this.response, this.error);
-}
-
-class IntEventModel {
-  final bool progress;
-  final List<int> response;
-  final String error;
-
-  IntEventModel(this.progress, this.response, this.error);
 }
