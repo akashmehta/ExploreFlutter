@@ -23,10 +23,6 @@ class NewsListBloc extends BaseBloc {
 
   List<int> idList = List();
 
-  void notifyItemExpand(int itemIndex) {
-    _itemSink.add(itemIndex);
-  }
-
   void fetchNewsItems(String newsType) {
     if (idList.isEmpty) {
       Observable<List<int>> _newsIdFuture =
