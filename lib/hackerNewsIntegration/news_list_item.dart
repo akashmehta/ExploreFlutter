@@ -25,8 +25,7 @@ class NewsListItemChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    NewsListBloc bloc = BlocProvider.of<NewsListBloc>(context);
-    print("Item $itemPosition is ${newsResponseItem?.isExpanded}");
+    NewsListBloc newsListBloc = BlocProvider.of<NewsListBloc>(context);
     if (newsResponseItem == null) {
       return Center(
         child: ProgressIndicatorWidget(),
@@ -42,66 +41,77 @@ class NewsListItemChild extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5)),
             child: Padding(
                 padding: EdgeInsets.all(10),
-                child: ExpansionTile(
-                  initiallyExpanded: newsResponseItem.isExpanded ?? false,
-                  onExpansionChanged: (isExpanded) {
-                    bloc.setOpenIndex(itemPosition);
-                  },
-                  title: Text(
-                    newsResponseItem.title,
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Icon(Icons.person),
-                            ),
-                            Center(
-                              child: Text(newsResponseItem.by),
-                            )
-                          ],
+                child: StreamBuilder(
+                    stream: newsListBloc.itemStream.asBroadcastStream(),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<int> snapshot) {
+                      int position = snapshot.data;
+                      newsResponseItem?.setIsExpanded =
+                          position == itemPosition;
+                      print(
+                          "Item $itemPosition is ${newsResponseItem?.isExpanded}");
+                      return ExpansionTile(
+                        initiallyExpanded: position == itemPosition,
+                        onExpansionChanged: (isExpanded) {
+                          newsResponseItem.setIsExpanded = true;
+                          newsListBloc.setOpenIndex(itemPosition);
+                        },
+                        title: Text(
+                          newsResponseItem.title,
+                          style: TextStyle(fontSize: 18),
                         ),
-                        InkWell(
-                          onTap: () {
-                            if (Navigator.of(context).canPop()) {
-                              Navigator.of(context).pop();
-                            }
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) {
-                              return new MaterialApp(
-                                routes: {
-                                  "/": (_) => new WebviewScaffold(
-                                        url: newsResponseItem.url,
-                                        appBar: new AppBar(
-                                          title:
-                                              new Text(newsResponseItem.title),
-                                        ),
-                                      ),
-                                },
-                              );
-                            }));
-                          },
-                          child: Row(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Icon(Icons.share),
+                              Row(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Icon(Icons.person),
+                                  ),
+                                  Center(
+                                    child: Text(newsResponseItem.by),
+                                  )
+                                ],
                               ),
-                              Center(
-                                child: Text("share"),
+                              InkWell(
+                                onTap: () {
+                                  if (Navigator.of(context).canPop()) {
+                                    Navigator.of(context).pop();
+                                  }
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return new MaterialApp(
+                                      routes: {
+                                        "/": (_) => new WebviewScaffold(
+                                              url: newsResponseItem.url,
+                                              appBar: new AppBar(
+                                                title: new Text(
+                                                    newsResponseItem.title),
+                                              ),
+                                            ),
+                                      },
+                                    );
+                                  }));
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Icon(Icons.share),
+                                    ),
+                                    Center(
+                                      child: Text("share"),
+                                    )
+                                  ],
+                                ),
                               )
                             ],
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                )),
+                          )
+                        ],
+                      );
+                    })),
           ),
         ),
       );

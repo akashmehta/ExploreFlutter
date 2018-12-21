@@ -13,7 +13,7 @@ class NewsListBloc extends BaseBloc {
 
   Stream<EventModel> get eventStream => _eventController.stream;
 
-  StreamController<int> _itemController = new StreamController();
+  StreamController<int> _itemController = StreamController.broadcast();
 
   Sink<int> get _itemSink => _itemController.sink;
 
@@ -88,11 +88,11 @@ class NewsListBloc extends BaseBloc {
     _itemController.close();
   }
 
-  int openedIndex = -1;
+  int collapseIndex = -1;
 
   void setOpenIndex(int itemPosition) {
-    _itemSink.add(openedIndex);
-    this.openedIndex = itemPosition;
+    _itemSink.add(collapseIndex);
+    this.collapseIndex = itemPosition;
   }
 }
 

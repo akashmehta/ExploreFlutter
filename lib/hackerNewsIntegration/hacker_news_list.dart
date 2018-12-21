@@ -79,19 +79,11 @@ class _HackerNewsListWidgetState extends State<HackerNewsListWidget>
         }
       }
     });
-    return StreamBuilder(
-        stream: newsListBloc.itemStream,
-        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-          int position = snapshot.data;
-          if (position != -1 && position != null) {
-            itemList[position]?.setIsExpanded = false;
-          }
-          return ListView.builder(
-              controller: _scrollController,
-              itemCount: itemList.length,
-              itemBuilder: (BuildContext context, int index) =>
-                  NewsListItem(itemList[index], index));
-        });
+    return ListView.builder(
+        controller: _scrollController,
+        itemCount: itemList.length,
+        itemBuilder: (BuildContext context, int index) =>
+            NewsListItem(itemList[index], index));
 
   }
 
