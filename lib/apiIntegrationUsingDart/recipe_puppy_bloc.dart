@@ -24,24 +24,41 @@ class RecipePuppyBloc extends BaseBloc {
 
   Stream<EventModel> get eventModelStream => _eventController.stream;
 
+  StreamController<int> _animateStreamController = StreamController.broadcast();
+
+  Sink<int> get _animationSink => _animateStreamController.sink;
+
+  Stream<int> get animationStream => _animateStreamController.stream;
+
   RecipePuppyBloc();
 
   void searchItems(String name) {
     _userInputSink.add(name);
   }
 
+  int currentPosition;
+  void handleItemTap(int currentPosition) {
+    this.currentPosition = currentPosition;
+    _animationSink.add(currentPosition);
+  }
+
   @override
   void dispose() {
+    _animateStreamController.close();
     _userInputController.close();
     _eventController.close();
   }
 
   void fetchRecipeApiSearchResult(String query) {
     Observable.just(query)
-        .flatMap((data) => Observable.fromFuture(fetchData(data)))
+        .flatMap(
+            (data) => Observable.fromFuture(fetchData(data).catchError((e) {
+                  throw e;
+                })))
         .doOnListen(() => eventModelSink.add(EventModel(true, null, null)))
         .doOnData((list) => eventModelSink.add(EventModel(false, list, null)))
-        .doOnError((error, stackTrace) => eventModelSink.add(EventModel(false, null, error)))
+        .doOnError((error, stackTrace) =>
+            eventModelSink.add(EventModel(false, null, error)))
         .listen(null);
   }
 
@@ -52,7 +69,7 @@ class RecipePuppyBloc extends BaseBloc {
   }
 
   Future<List<RecipeResults>> fetchData(String query) async {
-    File file  = await _getApplicationFile();
+    File file = await _getApplicationFile();
     bool isFileExist = await file.exists();
     if (!isFileExist) {
       file.create();
@@ -62,15 +79,15 @@ class RecipePuppyBloc extends BaseBloc {
       final response = await get("http://www.recipepuppy.com/api/?q=$query");
       if (response.statusCode == 200) {
         file.writeAsString(response.body);
-        return RecipePuppyResponse.fromJson(JsonDecoder().convert(response.body))
+        return RecipePuppyResponse.fromJson(
+                JsonDecoder().convert(response.body))
             .results;
       } else {
         throw Exception(response.body);
       }
     } else {
       String item = await file.readAsString();
-      return RecipePuppyResponse.fromJson(JsonDecoder().convert(item))
-          .results;
+      return RecipePuppyResponse.fromJson(JsonDecoder().convert(item)).results;
     }
   }
 }
@@ -78,7 +95,7 @@ class RecipePuppyBloc extends BaseBloc {
 class EventModel {
   final bool isLoading;
   final List<RecipeResults> list;
-  final String error;
+  final Exception error;
 
   EventModel(this.isLoading, this.list, this.error);
 }

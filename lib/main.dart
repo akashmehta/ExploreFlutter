@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/hackerNewsIntegration/news_home.dart';
+import 'package:flutter_app/apiIntegrationUsingDart/recipe_puppy_home.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,6 +8,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: NewsHomeWidget(),);
+        home: RecipePuppyHome(),);
   }
 }
