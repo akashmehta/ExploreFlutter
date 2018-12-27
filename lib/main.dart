@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/apiIntegrationUsingDart/recipe_puppy_home.dart';
+import 'package:flutter_app/common/bloc_provider.dart';
+import 'package:flutter_app/userLoginPage/login_bloc.dart';
+import 'package:flutter_app/userLoginPage/login_page_widget.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,6 +10,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: RecipePuppyHome(),);
+        home: BlocProvider(
+          bloc: LoginBloc(),
+          child: LoginPageWidget(),
+        ));
   }
 }
